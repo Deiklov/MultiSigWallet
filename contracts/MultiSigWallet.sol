@@ -67,6 +67,10 @@ contract MultiSigWallet {
         require(confirmations[transactionId][owner]);
         _;
     }
+    modifier lte66(uint value) {
+        require(value<=66*10**18);
+        _;
+    }
 
     modifier notConfirmed(uint transactionId, address owner) {
         require(!confirmations[transactionId][owner]);
@@ -188,6 +192,7 @@ contract MultiSigWallet {
     /// @return Returns transaction ID.
     function submitTransaction(address destination, uint value, bytes data)
         public
+        lte66(value)
         returns (uint transactionId)
     {
         transactionId = addTransaction(destination, value, data);
